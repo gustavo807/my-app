@@ -13,8 +13,16 @@ export class BookService {
         .pipe(map(this.extractData),catchError(this.handleError))
   }
 
-    protected extractData(res: Response) {
-        return res || [];
+    protected extractData(res: any) {
+        let items = res.items.map(item => {
+           return {
+             id: item.id,
+             title: item.volumeInfo.title,
+             description: item.volumeInfo.description,
+             thumbnail: item.volumeInfo.imageLinks.thumbnail
+           };
+        });
+        return items || [];
     }
 
     protected handleError (error: Response | any) {
